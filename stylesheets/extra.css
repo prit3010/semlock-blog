@@ -1,0 +1,299 @@
+.md-typeset {
+  --semlock-surface: #f8fafc;
+  --semlock-surface-strong: #e2e8f0;
+  --semlock-border: #cbd5e1;
+  --semlock-text: #0f172a;
+  --semlock-muted: #475569;
+  --semlock-header-bg: #e0f2fe;
+  --semlock-header-fg: #0c4a6e;
+  --semlock-success-bg: #dcfce7;
+  --semlock-success-fg: #166534;
+  --semlock-warning-bg: #fef3c7;
+  --semlock-warning-fg: #92400e;
+  --semlock-danger-bg: #fee2e2;
+  --semlock-danger-fg: #b91c1c;
+  --semlock-accent-bg: #ede9fe;
+  --semlock-accent-fg: #6d28d9;
+  --semlock-agent-a: #2563eb;
+  --semlock-agent-b: #dc2626;
+}
+
+[data-md-color-scheme="slate"] .md-typeset {
+  --semlock-surface: #111827;
+  --semlock-surface-strong: #1f2937;
+  --semlock-border: #334155;
+  --semlock-text: #e5eefb;
+  --semlock-muted: #94a3b8;
+  --semlock-header-bg: #172554;
+  --semlock-header-fg: #93c5fd;
+  --semlock-success-bg: #052e16;
+  --semlock-success-fg: #86efac;
+  --semlock-warning-bg: #451a03;
+  --semlock-warning-fg: #fcd34d;
+  --semlock-danger-bg: #450a0a;
+  --semlock-danger-fg: #fca5a5;
+  --semlock-accent-bg: #2e1065;
+  --semlock-accent-fg: #c4b5fd;
+  --semlock-agent-a: #60a5fa;
+  --semlock-agent-b: #f87171;
+}
+
+.semlock-table-wrap {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.semlock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+  background: var(--semlock-surface);
+  color: var(--semlock-text);
+  border: 1px solid var(--semlock-border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.semlock-table th,
+.semlock-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--semlock-border);
+  text-align: left;
+}
+
+.semlock-table th {
+  background: var(--semlock-surface-strong);
+  color: var(--semlock-muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.semlock-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.semlock-table__highlight td {
+  background: color-mix(in srgb, var(--semlock-accent-bg) 45%, var(--semlock-surface));
+}
+
+.semlock-badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.semlock-badge--success {
+  background: var(--semlock-success-bg);
+  color: var(--semlock-success-fg);
+}
+
+.semlock-badge--danger {
+  background: var(--semlock-danger-bg);
+  color: var(--semlock-danger-fg);
+}
+
+.semlock-badge--accent {
+  background: var(--semlock-accent-bg);
+  color: var(--semlock-accent-fg);
+}
+
+.semlock-muted {
+  color: var(--semlock-muted);
+  font-size: 0.75rem;
+  margin-left: 0.4rem;
+}
+
+.semlock-regions {
+  margin: 1.5rem 0;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.9rem;
+  background: var(--semlock-surface);
+  border: 1px solid var(--semlock-border);
+  color: var(--semlock-text);
+  font-family: "SFMono-Regular", "SF Mono", "Fira Code", "Roboto Mono", monospace;
+  font-size: 0.8rem;
+  line-height: 1.75;
+}
+
+.semlock-region {
+  margin-bottom: 0.25rem;
+  font-family: var(--md-text-font, inherit);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.semlock-region--header {
+  color: var(--semlock-header-fg);
+}
+
+.semlock-region--success {
+  color: var(--semlock-success-fg);
+}
+
+.semlock-region--warning {
+  color: var(--semlock-warning-fg);
+}
+
+.semlock-region--danger {
+  color: var(--semlock-danger-fg);
+}
+
+.semlock-region-line {
+  margin: 0.1rem 0;
+  padding: 0.05rem 0.55rem;
+  border-radius: 0.35rem;
+}
+
+.semlock-region-line--header {
+  background: var(--semlock-header-bg);
+  color: var(--semlock-header-fg);
+}
+
+.semlock-region-line--success {
+  background: var(--semlock-success-bg);
+  color: var(--semlock-success-fg);
+}
+
+.semlock-region-line--warning {
+  background: var(--semlock-warning-bg);
+  color: var(--semlock-warning-fg);
+}
+
+.semlock-region-line--danger {
+  background: var(--semlock-danger-bg);
+  color: var(--semlock-danger-fg);
+}
+
+.semlock-region-spacer {
+  height: 0.8rem;
+}
+
+.semlock-compare {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.semlock-panel {
+  border-radius: 0.9rem;
+  overflow: hidden;
+  border: 1px solid var(--semlock-border);
+  background: var(--semlock-surface);
+}
+
+.semlock-panel--danger {
+  border-color: color-mix(in srgb, var(--semlock-danger-fg) 35%, var(--semlock-border));
+}
+
+.semlock-panel--success {
+  border-color: color-mix(in srgb, var(--semlock-success-fg) 35%, var(--semlock-border));
+}
+
+.semlock-panel__title {
+  padding: 0.8rem 1rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.semlock-panel--danger .semlock-panel__title {
+  background: var(--semlock-danger-bg);
+  color: var(--semlock-danger-fg);
+}
+
+.semlock-panel--success .semlock-panel__title {
+  background: var(--semlock-success-bg);
+  color: var(--semlock-success-fg);
+}
+
+.semlock-panel__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+}
+
+.semlock-event {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+
+.semlock-event__dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  margin-top: 0.32rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.semlock-event__dot--agent-a {
+  background: var(--semlock-agent-a);
+}
+
+.semlock-event__dot--agent-b {
+  background: var(--semlock-agent-b);
+}
+
+.semlock-event__agent {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.semlock-event__agent--agent-a {
+  color: var(--semlock-agent-a);
+}
+
+.semlock-event__agent--agent-b {
+  color: var(--semlock-agent-b);
+}
+
+.semlock-event__text,
+.semlock-callout__text {
+  font-size: 0.78rem;
+  color: var(--semlock-text);
+}
+
+.semlock-callout {
+  padding: 0.7rem 0.8rem;
+  border: 1px dashed color-mix(in srgb, var(--semlock-warning-fg) 45%, var(--semlock-border));
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, var(--semlock-warning-bg) 55%, var(--semlock-surface));
+}
+
+.semlock-callout__title {
+  margin-bottom: 0.2rem;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--semlock-warning-fg);
+}
+
+.semlock-status--success {
+  color: var(--semlock-success-fg);
+}
+
+.semlock-status--danger {
+  color: var(--semlock-danger-fg);
+}
+
+@media (max-width: 760px) {
+  .semlock-compare {
+    grid-template-columns: 1fr;
+  }
+
+  .semlock-table {
+    min-width: 34rem;
+  }
+}
