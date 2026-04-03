@@ -1,6 +1,6 @@
 # SemLock: Region-Level Locking for Multi-Agent Code Editing
 
-> Why Git breaks for AI agents — and how we fix it
+> Incorporating certain concurrency concepts to Multi Agent Systems
 
 ## Inspiration
 
@@ -448,6 +448,73 @@ The one thing that doesn't survive a restart is the leases themselves since thos
 You might ask why split SemLock and the blackboard at all.
 
 It's so SemLock stays small and focused: just a locking and validation service. Different orchestration strategies, different retry policies, different escalation budgets can all change without touching the core locking primitive.
+
+## Benchmark Results
+
+I also spent some time benchmarking this because the obvious question is: does all this coordination actually pay for itself?
+
+For the concrete example in this post, I used the billing demo repo at `semlock-billing-demo`, which sets up a hot file with 10 top-level functions in `billing/charge_pipeline.py` and assigns one agent per function.
+
+The benchmark framing matters here. This is not "fast but broken" versus "slow but correct". The no-SemLock path is still required to converge on the same correct final file, even if it has to re-read and retry to get there.
+
+The broader harness in the main SemLock repo also supports two useful views:
+
+- a synthetic same-file workload with many top-level functions
+- a crossover sweep that makes it easier to see when conflict rates get high enough for coordination to win
+
+If you want to reproduce the runs, these are the commands:
+
+```bash
+uv run semlock-bench
+uv run semlock-bench --scenario crossover-sweep
+uv run semlock-bench --many-agent-count 32
+uv run semlock-bench --json
+```
+
+For the 10-agent billing demo, the results were:
+
+<div class="semlock-table-wrap">
+  <table class="semlock-table">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>Wall-clock time</th>
+        <th>Final correctness</th>
+        <th>Retries / collisions</th>
+        <th>Lock conflicts</th>
+        <th>Takeaway</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="semlock-table__highlight">
+        <td><strong>10-agent billing demo with SemLock</strong></td>
+        <td><span class="semlock-badge semlock-badge--accent">101s</span></td>
+        <td><span class="semlock-badge semlock-badge--success">All 10 edits landed</span></td>
+        <td><span class="semlock-badge semlock-badge--success">0</span></td>
+        <td><span class="semlock-badge semlock-badge--success">0 overlapping locks</span></td>
+        <td>Distinct regions let every worker commit cleanly on the first attempt.</td>
+      </tr>
+      <tr>
+        <td><strong>10-agent billing demo without SemLock</strong></td>
+        <td><span class="semlock-badge semlock-badge--danger">118s</span></td>
+        <td><span class="semlock-badge semlock-badge--success">All 10 edits landed eventually</span></td>
+        <td><span class="semlock-badge semlock-badge--danger">5 retry events</span></td>
+        <td><span class="semlock-muted">N/A</span></td>
+        <td>Correctness was recovered, but only after agents re-read and reapplied edits.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+In the SemLock run, all 10 workers targeted distinct `top_level_function` regions, and every worker acquired its lock, read the region, and committed on the first attempt with no stale-hash mismatches or semantic rejections.
+
+In the no-SemLock run, all 10 edits still made it into the file, but the system had to absorb repeated edit collisions. Worker 3 alone hit 3 collisions, and Workers 9 and 10 each needed an additional retry after the file changed under them.
+
+That is exactly the tradeoff SemLock is trying to improve: not just final correctness, but the amount of wasted agent work needed to reach it. In this billing demo, SemLock also finished faster overall: 101 seconds versus 118 seconds without SemLock.
+
+I still think the crossover point matters. If conflict is rare, SemLock adds overhead you may not need. If many agents are repeatedly colliding in the same file, coordination starts to pay for itself very quickly.
+
+That tradeoff is important enough that I would rather show the benchmark honestly than cherry-pick a friendly scenario. If the result is "SemLock only wins once contention gets ugly", that's still a useful result because ugly contention is exactly the case this system is meant to handle.
 
 ## Conclusion
 
